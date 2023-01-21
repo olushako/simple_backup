@@ -66,7 +66,7 @@ def upload_file(drive, destanation_folder, file):
             file2 = drive.CreateFile({'parents': [{'id': folder['id']}], 'title': file_name})
             file2.SetContentFile(file)
             file2.Upload()
-    print ('done')
+    print ('Uploaded')
 
 def upload_backups():
     drive = authentificate_gdrive()
