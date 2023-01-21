@@ -5,9 +5,12 @@ from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 from oauth2client.service_account import ServiceAccountCredentials
 
-backup_time = str(os.environ.get["BACKUP_TIME"])
-source_list = str(os.environ.get["SOURCES_LIST"])
-shared_service_folder = str(os.environ.get["GDRIVE_DESTINATION"])
+backup_time = str(os.environ['BACKUP_TIME'])
+print (backup_time)
+source_list = str(os.environ["SOURCES_LIST"])
+print(source_list)
+shared_service_folder = str(os.environ["GDRIVE_DESTINATION"])
+print (shared_service_folder)
 service_account_json = "/simple_backup_config/credentials.json"
 
 current_directory = os.path.dirname(__file__)
