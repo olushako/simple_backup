@@ -7,9 +7,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 backup_time = str(os.environ['BACKUP_TIME'])
 print (backup_time)
-source_list = str(os.environ["SOURCES_LIST"])
+source_list = str(os.environ['SOURCES_LIST'])
 print(source_list)
-shared_service_folder = str(os.environ["GDRIVE_DESTINATION"])
+shared_service_folder = str(os.environ['GDRIVE_DESTINATION'])
 print (shared_service_folder)
 service_account_json = "/simple_backup_config/credentials.json"
 
@@ -32,13 +32,21 @@ def process_backups ():
     
     sources = source_list.split(';')
     
+    i = 0
+
     for folder in sources:
         folder = '/host'+folder 
         if (os.path.exists(folder)):
             archive_name = os.path.split(folder)[1]+ '.zip'
             make_archive(folder,backup_directory+'/'+archive_name)
+            i=i+1
         else:
             print ('['+folder+'] doesnt exist')
+    
+    if i == 0: 
+        return False
+    else:
+        return True
 
 def authentificate_gdrive():
     scope = ["https://www.googleapis.com/auth/drive"]
@@ -80,8 +88,8 @@ def upload_backups():
     shutil.rmtree(backup_directory)
 
 def init ():
-    process_backups()
-    upload_backups()
+    result = process_backups()
+    if (result): upload_backups()
 
 schedule.every().day.at(backup_time).do(init)
 
