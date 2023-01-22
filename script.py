@@ -5,14 +5,12 @@ from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 from oauth2client.service_account import ServiceAccountCredentials
 
+print ('--- Container started ----')
 backup_time = str(os.environ['BACKUP_TIME'])
-print (backup_time)
 source_list = str(os.environ['SOURCES_LIST'])
-print(source_list)
 shared_service_folder = str(os.environ['GDRIVE_DESTINATION'])
-print (shared_service_folder)
 service_account_json = "/simple_backup_config/credentials.json"
-
+print ('Parameters: [' +backup_time +'] ['+source_list+'] ['+shared_service_folder+']')
 current_directory = os.path.dirname(__file__)
 backup_directory = current_directory + '/created_backups'
 
@@ -39,6 +37,7 @@ def process_backups ():
         if (os.path.exists(folder)):
             archive_name = os.path.split(folder)[1]+ '.zip'
             make_archive(folder,backup_directory+'/'+archive_name)
+            print ('Zip created: '+archive_name)
             i=i+1
         else:
             print ('['+folder+'] doesnt exist')
@@ -66,7 +65,8 @@ def create_folder(drive, parentFolder, folderName):
                 'mimeType': 'application/vnd.google-apps.folder'
             }
             folder = drive.CreateFile(file_metadata)
-            folder.Upload()
+            result = folder.Upload()
+            print ('Folder creation results: '+result)
 
 def upload_file(drive, destanation_folder, file):
     folders = drive.ListFile(
@@ -76,8 +76,8 @@ def upload_file(drive, destanation_folder, file):
             file_name = os.path.basename(file)
             file2 = drive.CreateFile({'parents': [{'id': folder['id']}], 'title': file_name})
             file2.SetContentFile(file)
-            file2.Upload()
-    print ('Uploaded')
+            res = file2.Upload()
+            print (file_name+' upload status '+res)
 
 def upload_backups():
     drive = authentificate_gdrive()
@@ -88,6 +88,7 @@ def upload_backups():
     shutil.rmtree(backup_directory)
 
 def init ():
+    print ('Main procedure is initiated')
     result = process_backups()
     if (result): upload_backups()
 
