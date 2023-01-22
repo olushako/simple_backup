@@ -6,6 +6,7 @@ from pydrive2.drive import GoogleDrive
 from oauth2client.service_account import ServiceAccountCredentials
 
 backup_time = str(os.environ['BACKUP_TIME'])
+backup_time = datetime.datetime.strptime(backup_time, '%H:%M')
 print (backup_time)
 source_list = str(os.environ['SOURCES_LIST'])
 print(source_list)
