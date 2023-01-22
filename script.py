@@ -36,6 +36,7 @@ def process_backups ():
         folder = '/host'+folder 
         if (os.path.exists(folder)):
             archive_name = os.path.split(folder)[1]+ '.zip'
+            print ('Processing ZIP: '+ archive_name)
             make_archive(folder,backup_directory+'/'+archive_name)
             print ('Zip created: '+archive_name)
             i=i+1
@@ -65,8 +66,8 @@ def create_folder(drive, parentFolder, folderName):
                 'mimeType': 'application/vnd.google-apps.folder'
             }
             folder = drive.CreateFile(file_metadata)
-            result = folder.Upload()
-            print ('Folder creation results: '+result)
+            folder.Upload()
+            print ('Folder created')
 
 def upload_file(drive, destanation_folder, file):
     folders = drive.ListFile(
@@ -76,8 +77,8 @@ def upload_file(drive, destanation_folder, file):
             file_name = os.path.basename(file)
             file2 = drive.CreateFile({'parents': [{'id': folder['id']}], 'title': file_name})
             file2.SetContentFile(file)
-            res = file2.Upload()
-            print (file_name+' upload status '+res)
+            file2.Upload()
+            print (file_name+' uploaded ')
 
 def upload_backups():
     drive = authentificate_gdrive()
