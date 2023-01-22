@@ -89,9 +89,10 @@ def upload_backups():
     shutil.rmtree(backup_directory)
 
 def init ():
-    print ('Main procedure is initiated')
+    print ('--- Main procedure is initiated ---')
     result = process_backups()
     if (result): upload_backups()
+    print ('- Procedure finished -')
 
 schedule.every().day.at(backup_time).do(init)
 
