@@ -79,6 +79,7 @@ def upload_file(drive, destanation_folder, file):
             file2.SetContentFile(file)
             file2.Upload()
             print (file_name+' uploaded ')
+            break
 
 def upload_backups():
     drive = authentificate_gdrive()
