@@ -56,8 +56,8 @@ def authentificate_gdrive():
     return GoogleDrive(gauth)
 
 def create_folder(drive, parentFolder, folderName):
-        folders = drive.ListFile(
-        {'q': "title='" + parentFolder + "' and mimeType='application/vnd.google-apps.folder' and trashed=false"}).GetList()
+        file_metadata = ''
+        folders = drive.ListFile({'q': "title='" + parentFolder + "' and mimeType='application/vnd.google-apps.folder' and trashed=false"}).GetList()
         for folder in folders:
             if folder['title'] == parentFolder:
                 file_metadata = {
@@ -65,8 +65,8 @@ def create_folder(drive, parentFolder, folderName):
                 'parents': [{'id': folder['id']}],
                 'mimeType': 'application/vnd.google-apps.folder'
             }
-        folder = drive.CreateFile(file_metadata)
-        folder.Upload()
+            folder = drive.CreateFile(file_metadata)
+            folder.Upload()
 
 def upload_file(drive, destanation_folder, file):
     folders = drive.ListFile(
